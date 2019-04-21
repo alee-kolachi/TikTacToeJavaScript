@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tic Tac Toe</title>
+    <style>
+        .button {
+            background: #F3DEC5;
+            font-size: 40px;
+            margin: 4px 2px;
+            border: none;
+            border-radius: 5px;
+            width: 100px;
+            height: 100px;
+            //background:red;
+            color: white;
+            outline: none;
+
+        }
+
+        div {
+            display: inline-block;
+            min-width: 400px;
+            width: 340px;
+            //text-align: center;
+        }
+
+        #table {
+            width: 100%;
+            font-size: 1.3em;
+            min-width: 0px;
+            border-radius: 5px;
+            margin-bottom: 0px;
+            padding: 5px 0px 5px 3px;
+            background-color: ghostwhite;
+
+        }
+
+        td {
+            width: 100%;
+            margin-right: 60px;
+            padding-bottom: 0px;
+            padding-top: 0px;
+        }
+
+        #buttons {
+            padding-left: 30px;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            outline: none;
+            background-color: green;
+            font-size: 1.3em;
+            color: white;
+            border-radius: 5px;
+            margin-left: 50px;
+            margin-top: 20px;
+            width: 90px;
+        }
+
+        .active {
+            background-color: green;
+            color: white;
+            cursor: pointer;
+        }
+
+        .noactive {
+            background-color: #a2a2a2;
+            color: #d2d2d2;
+            cursor: default;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <div id="table">
+            <table id="tableOriginal">
+
+                <tr>
+                    <td id="pl1"> Player One:</td>
+                    <td style="float: right" id="pl2">Player Two: </td>
+                </tr>
+                <tr>
+                    <td>Score: 0</td>
+                    <td style="float: right;">Score: 0</td>
+                </tr>
+
+            </table>
+
+        </div>
+        <br />
+        <div id="buttons">
+            <input type="button" onclick="tick(this.id);" class="button" value=" " id="btn1" />
+            <input type="button" onclick="tick(this.id);" class="button" value=" " id="btn2" />
+            <input type="button" onclick="tick(this.id);" class="button" value=" " id="btn3" />
+            <br />
+            <input type="button" onclick="tick(this.id);" class="button" value=" " id="btn4" />
+            <input type="button" onclick="tick(this.id);" class="button" value=" " id="btn5" />
+            <input type="button" onclick="tick(this.id);" class="button" value=" " id="btn6" />
+            <br />
+            <input type="button" onclick="tick(this.id);" class="button" value=" " id="btn7" />
+            <input type="button" onclick="tick(this.id);" class="button" value=" " id="btn8" />
+            <input type="button" onclick="tick(this.id);" class="button" value=" " id="btn9" />
+            <button type="button" class="active">Start</button>
+            <button type="button" class="noactive">Reload</button>
+        </div>
+
+    </div>
+
+
+</body>
+
+
+
+
+<script>
+    var playerOne = prompt("Please enter first player name");
+    var playerTwo = prompt("Please enter second player name");
+    var doneTicks = [];
+    document.getElementsByTagName("table")[0].rows[0].cells[0].innerHTML = playerOne;
+    document.getElementsByTagName("table")[0].rows[0].cells[0].style.color = "#5ACEDE";
+    document.getElementsByTagName("table")[0].rows[0].cells[1].innerHTML = playerTwo;
+    document.getElementsByTagName("table")[0].rows[0].cells[1].style.color = "#DB695B";
+    var mark = "O";
+    var winner = 0;
+    var count = 0;
+    score1 = 0;
+    score2 = 0;
+
+    function tick(id) {
+        //alert(mark)
+        var ele = document.getElementById(id);
+        ele.value = mark;
+        ele.style.background = "#5ACEDE";
+        ele.disabled = "disabled";
+        checkWinner();
+        mark = changeMark();
+        makeComputerPlay(ele, mark);
+
+    }
+
+    function changeMark() {
+        if (mark == "O"){
+            mark = "X";
+            return mark;
+        }
+        else{
+            mark = "O";
+            return mark
+        }
+    }
+
+    function makeComputerPlay(ele, mark) {
+        var randomNumber = Math.floor(1 + (Math.random() * 9));
+        if (document.getElementById("btn" + randomNumber).disabled) {
+            makeComputerPlay(ele, mark);
+        } else {
+
+            document.getElementById("btn" + randomNumber).value = mark;
+            document.getElementById("btn" + randomNumber).style.background = "#DB695B";
+            document.getElementById("btn" + randomNumber).disabled = "disabled";
+            checkWinner();
+            changeMark();
+
+
+        }
+    }
+
+    function checkWinner() {
+        var btn1 = document.getElementById("btn1").value;
+        var btn2 = document.getElementById("btn2").value;
+        var btn3 = document.getElementById("btn3").value;
+        var btn4 = document.getElementById("btn4").value;
+        var btn5 = document.getElementById("btn5").value;
+        var btn6 = document.getElementById("btn6").value;
+        var btn7 = document.getElementById("btn7").value;
+        var btn8 = document.getElementById("btn8").value;
+        var btn9 = document.getElementById("btn9").value;
+        if (btn1 == btn2 && btn2 == btn3 && btn1 != " ") {
+            alertWinner('btn1', 'btn2', 'btn3');            
+        }
+        if (btn1 == btn4 && btn4 == btn7 && btn1 != " ") {
+            alertWinner('btn1', 'btn4', 'btn7');
+        }
+
+        if (btn2 == btn5 && btn5 == btn8 && btn2 != " ") {
+            alertWinner('btn2', 'btn5', 'btn8');
+
+        }
+        if (btn3 == btn6 && btn6 == btn9 && btn3 != " ") {
+            alertWinner('btn3', 'btn6', 'btn9');
+        }
+        if (btn4 == btn5 && btn5 == btn6 && btn4 != " ") {
+            alertWinner('btn4', 'btn5', 'btn6');
+        }
+
+        if (btn7 == btn8 && btn8 == btn9 && btn7 != " ") {
+            alertWinner('btn7', 'btn8', 'btn9');
+        }
+        if (btn1 == btn5 && btn5 == btn9 && btn5 != " ") {
+            alertWinner('btn1', 'btn5', 'btn9');
+        }
+        if (btn3 == btn5 && btn5 == btn7 && btn5 != " ") {
+            alert(mark + " you are winner");
+            alertWinner('btn3', 'btn5', 'btn7');
+        }
+        if (btn1 != " " && btn2 != " " && btn3 != " " && btn4 != " " && btn5 != " " && btn6 != " " && btn7 != " " && btn8 != " " && btn9 != " " && winner != 1) {
+            alert("draw");
+        }
+        /*if(btn1=="X" &&  btn2=="X" && btn3=="X"){
+        	alert("X is winner");
+        }
+        if(btn1=="X" &&  btn4=="X" && btn7=="X"){
+        	alert("X is winner");
+        }
+        if(btn3=="X" &&  btn6=="X" && btn9=="X"){
+        	alert("X is winner");
+        } */
+
+    }
+
+    function alertWinner(id1, id2, id3) {
+        alert(mark + " you are winner");
+        winner = 1;
+        document.getElementById(id1).style.background = "green";
+        document.getElementById(id1).style.color = "white";
+
+        document.getElementById(id2).style.background = "green";
+        document.getElementById(id2).style.color = "white";
+
+        document.getElementById(id3).style.background = "green";
+        document.getElementById(id3).style.color = "white";
+        if(mark == "O"){
+            score1 += 1;
+            alert("inssiiiiiiiiiideeeeeeeee")
+            document.getElementsByTagName("table")[0].rows[1].cells[0].innerHTML = "Score: " + score1;
+//            ele = document.querySelectorAll(".active").className = "noactive";        
+//            document.querySelectorAll(".noactive").className = "active"; 
+//            for (var i = 0; i < els.length; i++) {
+//                els[i].className = "noactive"
+//            }
+            
+        }
+        else if(mark == "X"){
+//            score2 += 1;
+//            document.getElementsByTagName("table")[0].rows[1].cells[1].innerHTML = "Score: " + score2;
+//            document.getElementsByClassName("active").className = "noactive";  
+//            document.getElementsByClassName("noactive").className = "active"; 
+//            document.querySelectorAll(".active")[0].className = "noactive";        
+//            document.querySelectorAll(".noactive")[0].className = "active";   
+            
+        }
+        refresh();
+
+    }
+    function refresh(){
+        alert("refresh")
+        var btn1 = document.getElementById("btn1");
+        var btn2 = document.getElementById("btn2");
+        var btn3 = document.getElementById("btn3");
+        var btn4 = document.getElementById("btn4");
+        var btn5 = document.getElementById("btn5");
+        var btn6 = document.getElementById("btn6");
+        var btn7 = document.getElementById("btn7");
+        var btn8 = document.getElementById("btn8");
+        var btn9 = document.getElementById("btn9");
+        btn1.disabled = false;
+        btn2.disabled = false;
+        btn3.disabled = false;
+        btn4.disabled = false;
+        btn5.disabled = false;
+        btn6.disabled = false;
+        btn7.disabled = false;
+        btn8.disabled = false;
+        btn9.disabled = false;
+        btn1.value = " ";
+        btn2.value = " ";
+        btn3.value = " ";
+        btn4.value = " ";
+        btn5.value = " ";
+        btn6.value = " ";
+        btn7.value = " ";
+        btn8.value = " ";
+        btn9.value = " ";
+        btn1.backgroundColor = "#F3DEC5";
+        btn2.backgroundColor = "#F3DEC5";
+        btn3.backgroundColor = "#F3DEC5";
+        btn4.backgroundColor = "#F3DEC5";
+        btn5.backgroundColor = "#F3DEC5";
+        btn6.backgroundColor = "#F3DEC5";
+        btn7.backgroundColor = "#F3DEC5";
+        btn8.backgroundColor = "#F3DEC5";
+        btn9.backgroundColor = "#F3DEC5";
+        fail;
+        
+        
+        
+        
+    }
+</script></html>
